@@ -1,4 +1,3 @@
-// DetalheCliente.js
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -8,20 +7,16 @@ const DetalheCliente = ({ route, navigation }) => {
 
   const deleteCliente = async () => {
     try {
-      // Obtém a lista de clientes existentes
       const clientesData = await AsyncStorage.getItem('clientes');
       let clientes = [];
       if (clientesData !== null) {
         clientes = JSON.parse(clientesData);
       }
 
-      // Filtra o cliente a ser excluído
       const updatedClientes = clientes.filter(c => c.id !== cliente.id);
 
-      // Salva a lista atualizada no AsyncStorage
       await AsyncStorage.setItem('clientes', JSON.stringify(updatedClientes));
 
-      // Redireciona para a tela ListaCliente após excluir o cliente
       navigation.navigate('Lista de Clientes');
     } catch (error) {
       console.error('Erro ao excluir cliente:', error);
