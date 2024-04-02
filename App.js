@@ -1,7 +1,14 @@
+import React from 'react';
 import { View, Text, StatusBar, StyleSheet, Image, SafeAreaView, ScrollView, Platform } from 'react-native';
-import 'react-native-gesture-handler';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import ListaCliente from './src/components/ListaCliente';
+import DetalheCliente from './src/components/DetalheCliente';
+import AddCliente from './src/components/AddCliente';
 
-const DougGymApp = () => {
+const Stack = createStackNavigator();
+
+const HomeScreen = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle="light-content" backgroundColor="#333237" />
@@ -16,25 +23,25 @@ const DougGymApp = () => {
           </Text>
           <View style={styles.rowContainer}>
             <Text style={styles.textAboveImages}>
-              PREÇOS E PLANOS
+              PREÇOS E PLANOS (EM MANUTENCAO)
             </Text>
             <Image source={require('./assets/arnold.jpeg')} style={styles.image} />
           </View>
           <View style={styles.rowContainer}>
             <Text style={styles.textAboveImages}>
-              ÁREA DO CLIENTE
+              ÁREA DO CLIENTE (EM MANUTENCAO)
             </Text>
             <Image source={require('./assets/platz.jpeg')} style={styles.image} />
           </View>
           <View style={styles.rowContainer}>
             <Text style={styles.textAboveImages}>
-              DIVISÕES DE TREINO
+              DIVISÕES DE TREINO (EM MANUTENCAO)
             </Text>
             <Image source={require('./assets/images.jpeg')} style={styles.image} />
           </View>
           <View style={styles.rowContainer}>
             <Text style={styles.textAboveImages}>
-              TODOS OS EQUIPAMENTOS
+              TODOS OS EQUIPAMENTOS (EM MANUTENCAO)
             </Text>
             <Image source={require('./assets/levrone.jpeg')} style={styles.image} />
           </View>
@@ -54,6 +61,19 @@ const DougGymApp = () => {
         </View>
       </ScrollView>
     </SafeAreaView>
+  );
+};
+
+const DougGymApp = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Home' }} />
+        <Stack.Screen name="ListaCliente" component={ListaCliente} options={{ title: 'Lista de Clientes' }} />
+        <Stack.Screen name="DetalheCliente" component={DetalheCliente} options={{ title: 'Detalhe do Cliente' }} />
+        <Stack.Screen name="AddCliente" component={AddCliente} options={{ title: 'Adicionar Cliente' }} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
