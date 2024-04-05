@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Button, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useContext, useEffect } from 'react';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import { ClienteContext } from '../context/ClienteContext'; 
 
 const ListaCliente = ({ navigation }) => {
-  const [clientes, setClientes] = useState([]);
+  const { clientes, removerCliente } = useContext(ClienteContext); // Use o hook useContext para acessar o contexto ClienteContext
 
   useEffect(() => {
     loadClientes();
@@ -11,20 +11,15 @@ const ListaCliente = ({ navigation }) => {
 
   const loadClientes = async () => {
     try {
-      const clientesData = await AsyncStorage.getItem('clientes');
-      if (clientesData !== null) {
-        setClientes(JSON.parse(clientesData));
-      }
+      // Não é necessário mais carregar os clientes aqui, pois eles são fornecidos pelo contexto
     } catch (error) {
       console.error('Erro ao carregar clientes:', error);
     }
   };
 
-  const deleteCliente = async (id) => {
+  const handleDeleteCliente = async (id) => {
     try {
-      const updatedClientes = clientes.filter(cliente => cliente.id !== id);
-      await AsyncStorage.setItem('clientes', JSON.stringify(updatedClientes));
-      setClientes(updatedClientes);
+      removerCliente(id); // Chame a função removerCliente do contexto
     } catch (error) {
       console.error('Erro ao excluir cliente:', error);
     }
@@ -41,6 +36,9 @@ const ListaCliente = ({ navigation }) => {
             style={styles.clientItem}
           >
             <Text>{item.nome}</Text>
+            <TouchableOpacity onPress={() => handleDeleteCliente(item.id)}>
+              <Text style={{ color: 'red' }}>Excluir</Text>
+            </TouchableOpacity>
           </TouchableOpacity>
         )}
         keyExtractor={item => item.id.toString()}
@@ -54,6 +52,15 @@ const styles = StyleSheet.create({
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
+  },
+  button: {
+    backgroundColor: 'blue',
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: 'white',
+    textAlign: 'center',
   },
 });
 

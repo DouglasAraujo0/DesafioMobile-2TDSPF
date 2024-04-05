@@ -1,23 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ClienteContext } from '../context/ClienteContext'; 
 
 const DetalheCliente = ({ route, navigation }) => {
   const { cliente } = route.params;
+  const { removerCliente } = useContext(ClienteContext); // Use o hook useContext para acessar o contexto ClienteContext
 
-  const deleteCliente = async () => {
+  const handleDeleteCliente = async () => {
     try {
-      const clientesData = await AsyncStorage.getItem('clientes');
-      let clientes = [];
-      if (clientesData !== null) {
-        clientes = JSON.parse(clientesData);
-      }
-
-      const updatedClientes = clientes.filter(c => c.id !== cliente.id);
-
-      await AsyncStorage.setItem('clientes', JSON.stringify(updatedClientes));
-
-      navigation.navigate('Lista de Clientes');
+      removerCliente(cliente.id); // Chame a função removerCliente do contexto
+      navigation.navigate('ListaCliente');
     } catch (error) {
       console.error('Erro ao excluir cliente:', error);
     }
@@ -29,7 +21,7 @@ const DetalheCliente = ({ route, navigation }) => {
       <Text>Nome: {cliente.nome}</Text>
       <Text>Idade: {cliente.idade}</Text>
       <Text>Plano: {cliente.plano}</Text>
-      <Button title="Excluir Cliente" onPress={deleteCliente} />
+      <Button title="Excluir Cliente" onPress={handleDeleteCliente} />
     </View>
   );
 };
@@ -39,6 +31,15 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  button: {
+    backgroundColor: 'blue',
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: 'white',
+    textAlign: 'center',
   },
 });
 

@@ -5,11 +5,16 @@ import { createStackNavigator } from '@react-navigation/stack';
 import ListaCliente from './src/components/ListaCliente';
 import DetalheCliente from './src/components/DetalheCliente';
 import AddCliente from './src/components/AddCliente';
+import { ClienteProvider } from './src/context/ClienteContext';
+
+
+
 
 const Stack = createStackNavigator();
 
 const HomeScreen = () => {
   return (
+    <ClienteProvider>
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle="light-content" backgroundColor="#333237" />
       <ScrollView contentContainerStyle={styles.scrollContent}>
@@ -61,19 +66,22 @@ const HomeScreen = () => {
         </View>
       </ScrollView>
     </SafeAreaView>
+    </ClienteProvider>
   );
 };
 
 const DougGymApp = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Home' }} />
-        <Stack.Screen name="ListaCliente" component={ListaCliente} options={{ title: 'Lista de Clientes' }} />
-        <Stack.Screen name="DetalheCliente" component={DetalheCliente} options={{ title: 'Detalhe do Cliente' }} />
-        <Stack.Screen name="AddCliente" component={AddCliente} options={{ title: 'Adicionar Cliente' }} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <ClienteProvider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Home">
+          <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Home' }} />
+          <Stack.Screen name="ListaCliente" component={ListaCliente} options={{ title: 'Lista de Clientes' }} />
+          <Stack.Screen name="DetalheCliente" component={DetalheCliente} options={{ title: 'Detalhe do Cliente' }} />
+          <Stack.Screen name="AddCliente" component={AddCliente} options={{ title: 'Adicionar Cliente' }} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </ClienteProvider>
   );
 };
 
